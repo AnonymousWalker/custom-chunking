@@ -9,12 +9,12 @@ console.log(resources)
 const books = da.getBooks("en", "ulb")
 console.log(books)
 
-const projectDir = da.getProject("en", "jas", "ulb")
+const projectDir = da.getProject("en", "ulb", "eph")
 const pa = new ProjectAccessor(projectDir)
 
 const chapters = pa.getChapters()
 console.log(chapters)
 
-const chunks = pa.getChunks('02')
-console.log(chunks)
+const text = pa.getChapterText('01')
+console.log(text)
 

@@ -31,13 +31,34 @@ class ProjectAccessor {
     }
 
     getChapters() {
-        const contents = Array.from(this.getToc())
+        const toc = this.getToc()
+        const contents = Array.from(toc)
         return contents.map(c => new Chapter(c['chapter'], c['chunks']))
     }
 
     getChunks(chapterSlug) {
         const chapter = this.getChapters().find(c => c.slug === chapterSlug)
         return chapter != null ? chapter.chunks : null
+    }
+
+    getChapterText(chapterSlug) {
+        const chapter = this.getChapters().find(c => c.slug === chapterSlug)
+        const chunkFiles = [];
+        chapter.chunks
+        .filter(c => c.slug != 'title')
+        .forEach(chunk => {
+            const chunkFile = path.join(
+                this.getContentDir(), 
+                chapter.getPathName(), 
+                chunk.getPathName()
+            )
+            chunkFiles.push(chunkFile)
+        })
+
+        let text = '';
+        chunkFiles.forEach(f => text += fs.readFileSync(f, 'utf-8'))
+
+        return text
     }
 }
 
