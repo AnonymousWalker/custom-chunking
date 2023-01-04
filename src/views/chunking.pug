@@ -1,0 +1,18 @@
+extends index.pug
+
+block action
+    +action Create Chunks
+
+block breadcrumbs
+    -
+        var crumbs = [
+            {name: "Home", href: "/"},
+            {name: params.lang, href: `/${params.lang}`},
+            {name: params.res, href: `/${params.lang}/${params.res}`},
+            {name: params.book, href: `/${params.lang}/${params.res}/${params.book}`}
+        ]
+    +breadcrumbs(crumbs, params.chapter)
+block content
+    div(id='chunkingComponent' data-content=contents) 
+
+    button(onclick=`saveChunks()`) Save Chunks

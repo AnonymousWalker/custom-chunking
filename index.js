@@ -38,8 +38,8 @@ router.get('/:lang/:res/:book', (req, res) => {
 router.get('/:lang/:res/:book/:chapter', (req, res) => {
     const projectDir = da.getProject(req.params.lang, req.params.res, req.params.book)
     const pa = new ProjectAccessor(projectDir)
-    const chunks = pa.getChunks(req.params.chapter)
-    res.render("chunks", { params: req.params, chunks: chunks })
+    const chapterText = pa.getChapterText(req.params.chapter)
+    res.render("chunking", { params: req.params, contents: chapterText })
 })
 
 router.post('/save_chunks', (req, res) => {
