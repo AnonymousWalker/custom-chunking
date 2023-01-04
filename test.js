@@ -1,6 +1,6 @@
 const ProjectAccessor = require('./src/ProjectAccessor')
 
-const projectDir = `C:\\Users\\Tony\\AppData\\Local\\BTT-Writer\\library\\resource_containers\\en_eph_ulb`
+const projectDir = `/path/to/project`
 
 const pa = new ProjectAccessor(projectDir)
 const chapters = pa.getChapters()
