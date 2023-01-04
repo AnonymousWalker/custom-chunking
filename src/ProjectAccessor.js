@@ -2,6 +2,7 @@ const path = require('path')
 const fs = require('fs')
 const YAML = require('yaml')
 const Chapter = require('./Chapter')
+const Chunk = require('./Chunk')
 
 class ProjectAccessor {
     constructor(path) {
@@ -36,6 +37,13 @@ class ProjectAccessor {
         return contents.map(c => new Chapter(c['chapter'], c['chunks']))
     }
 
+    getChapterPath(chapterSlug) {
+        return path.join(
+            this.getContentDir(), 
+            chapterSlug
+        )
+    }
+
     getChunks(chapterSlug) {
         const chapter = this.getChapters().find(c => c.slug === chapterSlug)
         return chapter != null ? chapter.chunks : null
@@ -48,8 +56,7 @@ class ProjectAccessor {
         .filter(c => c.slug != 'title')
         .forEach(chunk => {
             const chunkFile = path.join(
-                this.getContentDir(), 
-                chapter.getPathName(), 
+                this.getChapterPath(chapterSlug), 
                 chunk.getPathName()
             )
             chunkFiles.push(chunkFile)
@@ -59,6 +66,24 @@ class ProjectAccessor {
         chunkFiles.forEach(f => text += fs.readFileSync(f, 'utf-8'))
 
         return text
+    }
+
+    saveChunks(chunks, chapterSlug) {
+        if (!fs.existsSync(this.projectDir)) {
+            return
+        }
+
+        const outputDir = path.join(
+            this.getContentDir(), 
+            chapterSlug, 
+            'new-chunks'
+        )
+        fs.mkdirSync(outputDir, { recursive: true })
+
+        Object.keys(chunks).forEach(key => {
+            const chunkFile = path.join(outputDir, `${key}.usx`)
+            fs.writeFileSync(chunkFile, chunks[key])
+        })
     }
 }
 

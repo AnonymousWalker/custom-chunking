@@ -3,20 +3,18 @@ function test(chunk) {
 }
 
 async function saveChunks() {
-    const chunks = []
-    document.querySelectorAll(".chunk").forEach(item => {
-        chunks.push(item.textContent)
-    })
+    const chunks = {
+        "01": `chunk 1 content`
+    }
 
-    const response = await fetch("/save_chunks", {
+    return fetch(window.location.href, {
         method: "POST",
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
         },
         body: JSON.stringify({chunks: chunks})
-    })
-    response.json().then(data => {
-        console.log(data)
+    }).then(res => {
+        if (res.status == 200) alert("Success")
     })
 }

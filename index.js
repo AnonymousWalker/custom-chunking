@@ -42,9 +42,14 @@ router.get('/:lang/:res/:book/:chapter', (req, res) => {
     res.render("chunking", { params: req.params, contents: chapterText })
 })
 
-router.post('/save_chunks', (req, res) => {
+router.post('/:lang/:res/:book/:chapter', (req, res) => {
     // Save chunks and send repsonse
-    res.status(201).json(req.body)
+    const projectDir = da.getProject(req.params.lang, req.params.res, req.params.book)
+    const pa = new ProjectAccessor(projectDir)
+    const chunks = req.body.chunks
+
+    pa.saveChunks(chunks, req.params.chapter)
+    res.sendStatus(200)
 })
 
 app.use(bodyParser.urlencoded({ extended: false }));
