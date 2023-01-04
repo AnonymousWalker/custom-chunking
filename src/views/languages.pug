@@ -1,0 +1,12 @@
+extends index.pug
+
+block action
+    +action Select Language
+    
+block content
+    ul
+        each lang in languages
+            li
+                a(href=`/${lang}`)= lang
+        else
+            li There no languages

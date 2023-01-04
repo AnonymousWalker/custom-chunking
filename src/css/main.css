@@ -1,0 +1,27 @@
+.breadcrumb__item {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.breadcrumb__item:not(:last-child):after {
+    content: '➤';
+    margin-right: 4px;
+    margin-left: 4px;
+}
+
+.breadcrumb__item:not(:last-child) {
+    color: blue;
+}
+
+.breadcrumb__link {
+    color: blue;
+}
+
+.breadcrumb__link-current {
+    color: black;
+}
+
+.breadcrumb__list {
+    list-style-type: none;
+    padding: 0;
+}

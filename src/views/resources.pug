@@ -1,0 +1,14 @@
+extends index.pug
+
+block action
+    +action Select Resource
+
+block breadcrumbs
+    +breadcrumbs([{name: "Home", href: "/"}], params.lang)
+block content
+    ul
+        each res in resources
+            li
+                a(href=`/${params.lang}/${res}`)= res
+        else
+            li There no resources

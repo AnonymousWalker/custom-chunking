@@ -1,0 +1,20 @@
+extends index.pug
+
+block action
+    +action Select Chapter
+
+block breadcrumbs
+    -
+        var crumbs = [
+            {name: "Home", href: "/"},
+            {name: params.lang, href: `/${params.lang}`},
+            {name: params.res, href: `/${params.lang}/${params.res}`}
+        ]
+    +breadcrumbs(crumbs, params.book)
+block content
+    ul
+        each chapter in chapters
+            li
+                a(href=`/${params.lang}/${params.res}/${params.book}/${chapter.slug}`)= chapter.slug
+        else
+            li There no chapters
