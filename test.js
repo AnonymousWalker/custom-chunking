@@ -8,8 +8,8 @@ const resources = da.getResources("en")
 console.log(resources)
 const books = da.getBooks("en", "ulb")
 console.log(books)
-const projectDir = da.getProject("en", "jas", "ulb")
 
+const projectDir = da.getProject("en", "jas", "ulb")
 const pa = new ProjectAccessor(projectDir)
 
 const chapters = pa.getChapters()
