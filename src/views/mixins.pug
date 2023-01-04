@@ -1,0 +1,18 @@
+mixin action
+    h2
+        if block
+            block
+
+mixin breadcrumbs(items, last)
+    .breadcrumb
+        ul.breadcrumb__list&attributes(attributes)
+            each item in items
+                li.breadcrumb__item
+                  a(href=item.href title=item.name).breadcrumb__link= item.name
+
+            if last
+                li.breadcrumb__item
+                    span.breadcrumb__link-current= last
+            else
+        if block
+            block

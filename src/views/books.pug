@@ -1,0 +1,19 @@
+extends index.pug
+
+block action
+    +action Select Book
+
+block breadcrumbs
+    -
+        var crumbs = [
+            {name: "Home", href: "/"},
+            {name: params.lang, href: `/${params.lang}`}
+        ]
+    +breadcrumbs(crumbs, params.res)
+block content
+    ul
+        each book in books
+            li
+                a(href=`/${params.lang}/${params.res}/${book}`)= book
+        else
+            li There no books
