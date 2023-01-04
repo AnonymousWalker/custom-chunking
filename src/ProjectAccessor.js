@@ -23,7 +23,7 @@ class ProjectAccessor {
     }
 
     getToc() {
-        const tocFile = path.join(this.projectDir, 'content', 'toc.yml')
+        const tocFile = path.join(this.getContentDir(), 'toc.yml')
         if (fs.existsSync(tocFile)) {
             const raw = fs.readFileSync(tocFile, 'utf8')
             return YAML.parse(raw)
@@ -84,6 +84,30 @@ class ProjectAccessor {
             const chunkFile = path.join(outputDir, `${key}.usx`)
             fs.writeFileSync(chunkFile, chunks[key])
         })
+    }
+
+    _updateToc(chapterSlug, chunks) {
+        const tocFile = path.join(this.getContentDir(), 'toc.yml')
+        const raw = fs.readFileSync(tocFile, 'utf8')
+        const toc = YAML.parse(raw)
+        
+        const chapterIndex = Array.from(toc).findIndex(item => item['chapter'] == chapterSlug)
+        if (chapterIndex < 0) return
+
+        let chunkArray = Array.from(toc[chapterIndex].chunks)
+        const hasTitle = chunkArray.includes('title')
+
+        if (hasTitle) {
+            chunkArray = ['title'].concat(chunks)
+        } else {
+            chunkArray = chunks
+        }
+
+        toc[chapterIndex].chunks = chunkArray
+
+        // write toc.yml
+        const data = YAML.stringify(toc)
+        console.log(data)
     }
 }
 
