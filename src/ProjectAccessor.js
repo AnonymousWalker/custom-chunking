@@ -1,5 +1,6 @@
 const path = require('path')
 const fs = require('fs')
+const fsExtra = require('fs-extra')
 const YAML = require('yaml')
 const Chapter = require('./Chapter')
 const Chunk = require('./Chunk')
@@ -79,6 +80,8 @@ class ProjectAccessor {
             'new-chunks'
         )
         fs.mkdirSync(outputDir, { recursive: true })
+
+        fsExtra.emptyDirSync(outputDir)
 
         Object.keys(chunks).forEach(key => {
             const chunkFile = path.join(outputDir, `${key}.usx`)
