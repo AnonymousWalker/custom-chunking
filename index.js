@@ -48,7 +48,7 @@ router.post('/:lang/:res/:book/:chapter', (req, res) => {
     const chunks = req.body
 
     pa.saveChunks(chunks, req.params.chapter)
-    res.json({message: "Saved!"})
+    res.sendStatus(200)
 })
 
 app.use(express.static(path.join(__dirname, 'src/public')))
