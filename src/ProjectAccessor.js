@@ -35,7 +35,8 @@ class ProjectAccessor {
     getChapters() {
         const toc = this.getToc()
         const contents = Array.from(toc)
-        return contents.map(c => new Chapter(c['chapter'], c['chunks']))
+        return contents.filter(c => c['chapter'] !== 'front')
+            .map(c => new Chapter(c['chapter'], c['chunks']))
     }
 
     getChapterPath(chapterSlug) {
@@ -54,7 +55,7 @@ class ProjectAccessor {
         const chapter = this.getChapters().find(c => c.slug === chapterSlug)
         const chunkFiles = [];
         chapter.chunks
-        .filter(c => c.slug != 'title')
+        .filter(c => c.slug !== 'title')
         .forEach(chunk => {
             const chunkFile = path.join(
                 this.getChapterPath(chapterSlug), 
