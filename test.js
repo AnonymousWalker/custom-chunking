@@ -20,6 +20,4 @@ const chunks = {
     "03": `chunk 3`
 }
 
-// pa.saveChunks(chunks, '01')
-
-pa._updateToc('01', Object.keys(chunks))
+pa.saveChunks(chunks, '01')

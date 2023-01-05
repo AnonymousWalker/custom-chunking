@@ -4,6 +4,7 @@ const fsExtra = require('fs-extra')
 const YAML = require('yaml')
 const Chapter = require('./Chapter')
 const Chunk = require('./Chunk')
+const utils = require('./utils')
 
 class ProjectAccessor {
     constructor(path) {
@@ -77,21 +78,21 @@ class ProjectAccessor {
 
         const outputDir = path.join(
             this.getContentDir(), 
-            chapterSlug, 
-            'new-chunks'
+            chapterSlug
         )
         fs.mkdirSync(outputDir, { recursive: true })
-        fsExtra.emptyDirSync(outputDir)
 
-        Object.keys(chunks).forEach(key => {
-            const chunkFile = path.join(outputDir, `${key}.usx`)
+        const chunkIds = Object.keys(chunks)
+        this._updateToc(chapterSlug, chunkIds.map(c => utils.formatPaddedInt(utils.toInt(c))))
+
+        chunkIds.forEach(key => {
+            const fileName = utils.formatPaddedInt(utils.toInt(key))
+            const chunkFile = path.join(outputDir, `${fileName}.usx`)
             fs.writeFileSync(chunkFile, chunks[key])
         })
-
-        this._updateToc(chapterSlug, chunks)
     }
 
-    _updateToc(chapterSlug, chunks) {
+    _updateToc(chapterSlug, newChunks) {
         const tocFile = path.join(this.getContentDir(), 'toc.yml')
         const raw = fs.readFileSync(tocFile, 'utf8')
         const toc = YAML.parse(raw)
@@ -100,19 +101,27 @@ class ProjectAccessor {
         if (chapterIndex < 0) return
 
         let chunkArray = Array.from(toc[chapterIndex].chunks)
+        this._deleteOldChunks(chunkArray, chapterSlug)
         const hasTitle = chunkArray.includes('title')
 
         if (hasTitle) {
-            chunkArray = ['title'].concat(chunks)
+            chunkArray = ['title'].concat(newChunks)
         } else {
-            chunkArray = chunks
+            chunkArray = newChunks
         }
 
         toc[chapterIndex].chunks = chunkArray
 
         // write toc.yml
-        const data = YAML.stringify(toc)
-        console.log(data)
+        const ymlContent = YAML.stringify(toc)
+        fs.writeFileSync(tocFile, ymlContent)
+    }
+
+    _deleteOldChunks(chunkNames, chapter) {
+        const chapterDir = this.getChapterPath(chapter)
+        chunkNames.filter(name => name !== 'title').forEach(name => {
+            fs.unlinkSync(path.resolve(chapterDir, `${name}.usx`))
+        })
     }
 }
 
