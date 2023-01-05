@@ -1,5 +1,8 @@
 extends index.pug
 
+block append styles
+    link(rel='stylesheet', href='/css/chunking_component.css')
+
 block append scripts
     script(type='module', src='/js/chunking_component.js')
 
