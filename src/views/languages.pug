@@ -3,8 +3,11 @@ extends index.pug
 block action
     +action Select Language
     
+block breadcrumbs
+    +breadcrumbs([], "HOME")
+
 block content
-    ul
+    ul(class='menu')
         each lang in languages
             li
                 a(href=`/${lang}`)= lang

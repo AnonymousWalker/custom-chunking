@@ -6,12 +6,12 @@ block action
 block breadcrumbs
     -
         var crumbs = [
-            {name: "Home", href: "/"},
-            {name: params.lang, href: `/${params.lang}`}
+            {name: "HOME", href: "/"},
+            {name: params.lang.toUpperCase(), href: `/${params.lang}`}
         ]
-    +breadcrumbs(crumbs, params.res)
+    +breadcrumbs(crumbs, params.res.toUpperCase())
 block content
-    ul
+    ul(class='menu')
         each book in books
             li
                 a(href=`/${params.lang}/${params.res}/${book}`)= book

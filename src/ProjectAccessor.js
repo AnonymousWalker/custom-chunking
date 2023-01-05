@@ -1,5 +1,6 @@
 const path = require('path')
 const fs = require('fs')
+const fsExtra = require('fs-extra')
 const YAML = require('yaml')
 const Chapter = require('./Chapter')
 const Chunk = require('./Chunk')
@@ -34,7 +35,8 @@ class ProjectAccessor {
     getChapters() {
         const toc = this.getToc()
         const contents = Array.from(toc)
-        return contents.map(c => new Chapter(c['chapter'], c['chunks']))
+        return contents.filter(c => c['chapter'] !== 'front')
+            .map(c => new Chapter(c['chapter'], c['chunks']))
     }
 
     getChapterPath(chapterSlug) {
@@ -53,7 +55,7 @@ class ProjectAccessor {
         const chapter = this.getChapters().find(c => c.slug === chapterSlug)
         const chunkFiles = [];
         chapter.chunks
-        .filter(c => c.slug != 'title')
+        .filter(c => c.slug !== 'title')
         .forEach(chunk => {
             const chunkFile = path.join(
                 this.getChapterPath(chapterSlug), 
@@ -79,6 +81,7 @@ class ProjectAccessor {
             'new-chunks'
         )
         fs.mkdirSync(outputDir, { recursive: true })
+        fsExtra.emptyDirSync(outputDir)
 
         Object.keys(chunks).forEach(key => {
             const chunkFile = path.join(outputDir, `${key}.usx`)

@@ -43,15 +43,15 @@ router.get('/:lang/:res/:book/:chapter', (req, res) => {
 })
 
 router.post('/:lang/:res/:book/:chapter', (req, res) => {
-    // Save chunks and send repsonse
     const projectDir = da.getProject(req.params.lang, req.params.res, req.params.book)
     const pa = new ProjectAccessor(projectDir)
-    const chunks = req.body.chunks
+    const chunks = req.body
 
     pa.saveChunks(chunks, req.params.chapter)
-    res.sendStatus(200)
+    res.json({message: "Saved!"})
 })
 
+app.use(express.static(path.join(__dirname, 'src/public')))
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/", router)
