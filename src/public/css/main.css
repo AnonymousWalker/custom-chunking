@@ -12,6 +12,9 @@
     -moz-osx-font-smoothing:grayscale;
     -webkit-text-size-adjust:100%
 }
+body {
+    padding: 1em;
+}
 a{
     font-weight:500;
     color:#646cff;
@@ -36,7 +39,6 @@ ul.menu {
 ul.menu li {
     display: block;
     color: #000;
-    padding: 8px 0 8px 16px;
     text-decoration: none;
     cursor: pointer;
     border-radius: 6px;
@@ -48,6 +50,7 @@ ul.menu li:hover {
 
 ul.menu li a {
     display: block;
+    padding: 8px 0 8px 16px;
 }
 
 .breadcrumb {

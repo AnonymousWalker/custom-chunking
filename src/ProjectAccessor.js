@@ -87,6 +87,8 @@ class ProjectAccessor {
             const chunkFile = path.join(outputDir, `${key}.usx`)
             fs.writeFileSync(chunkFile, chunks[key])
         })
+
+        this._updateToc(chapterSlug, chunks)
     }
 
     _updateToc(chapterSlug, chunks) {
