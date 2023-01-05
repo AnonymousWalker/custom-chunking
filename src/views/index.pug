@@ -4,10 +4,10 @@ doctype html
 html
     head
         title Chunk Creator
-        style
-            include ../css/main.css
-        script
-            include ../js/main.js
+        link(rel='stylesheet', href='/css/main.css')
+        link(rel='stylesheet', href='/css/chunking_component.css')
+        block scripts
+            script(src='/js/main.js')
     body
         block action
         block breadcrumbs

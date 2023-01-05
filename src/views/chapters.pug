@@ -12,7 +12,7 @@ block breadcrumbs
         ]
     +breadcrumbs(crumbs, params.book)
 block content
-    ul
+    ul(class='menu')
         each chapter in chapters
             li
                 a(href=`/${params.lang}/${params.res}/${params.book}/${chapter.slug}`)= chapter.slug

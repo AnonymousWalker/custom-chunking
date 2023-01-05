@@ -6,7 +6,7 @@ block action
 block breadcrumbs
     +breadcrumbs([{name: "Home", href: "/"}], params.lang)
 block content
-    ul
+    ul(class='menu')
         each res in resources
             li
                 a(href=`/${params.lang}/${res}`)= res

@@ -1,5 +1,8 @@
 extends index.pug
 
+block append scripts
+    script(type='module', src='/js/chunking_component.js')
+
 block action
     +action Create Chunks
 
@@ -13,6 +16,4 @@ block breadcrumbs
         ]
     +breadcrumbs(crumbs, params.chapter)
 block content
-    div(id='chunkingComponent' data-content=contents) 
-
-    button(onclick=`saveChunks()`) Save Chunks
+    div(id='chunkingComponent' data-content=contents)

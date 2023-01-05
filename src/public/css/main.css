@@ -1,0 +1,92 @@
+:root{
+    font-family:Inter,Avenir,Helvetica,Arial,sans-serif;
+    font-size:16px;
+    line-height:24px;
+    font-weight:400;
+    color-scheme:light dark;
+    color:#ffffffde;
+    background-color:#242424;
+    font-synthesis:none;
+    text-rendering:optimizeLegibility;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    -webkit-text-size-adjust:100%
+}
+a{
+    font-weight:500;
+    color:#646cff;
+    text-decoration:inherit
+}
+a:hover{
+    color:#535bf2
+}
+h1{
+    font-size:3.2em;
+    line-height:1.1
+}
+ul.menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.menu li {
+    display: block;
+    color: #000;
+    padding: 8px 0 8px 16px;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+ul.menu li:hover {
+    background-color: #ccc;
+}
+
+ul.menu li a {
+    display: block;
+}
+
+.breadcrumb {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.breadcrumb__item {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.breadcrumb__item:not(:last-child):after {
+    content: '➤';
+    margin-right: 4px;
+    margin-left: 4px;
+    font-size: 12px;
+}
+
+.breadcrumb__item:not(:last-child) {
+    color: white;
+}
+
+.breadcrumb__link {
+    color: #2596be;
+}
+
+.breadcrumb__link-current {
+    color: #be4d25;
+    font-weight: bold;
+}
+
+.breadcrumb__list {
+    list-style-type: none;
+    padding: 0;
+}
+@media (prefers-color-scheme: light){
+    :root{
+        color:#213547;
+        background-color:#fff
+    }
+    .breadcrumb__item:not(:last-child) {
+        color: #212121;
+    }
+}

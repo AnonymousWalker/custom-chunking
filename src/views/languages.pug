@@ -4,7 +4,7 @@ block action
     +action Select Language
     
 block content
-    ul
+    ul(class='menu')
         each lang in languages
             li
                 a(href=`/${lang}`)= lang

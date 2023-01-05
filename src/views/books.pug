@@ -11,7 +11,7 @@ block breadcrumbs
         ]
     +breadcrumbs(crumbs, params.res)
 block content
-    ul
+    ul(class='menu')
         each book in books
             li
                 a(href=`/${params.lang}/${params.res}/${book}`)= book

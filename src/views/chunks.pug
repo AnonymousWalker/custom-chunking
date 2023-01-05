@@ -13,7 +13,7 @@ block breadcrumbs
         ]
     +breadcrumbs(crumbs, params.chapter)
 block content
-    ul
+    ul(class='menu')
         each chunk in chunks
             li(class="chunk" onclick=`test(${chunk.slug})`)= chunk.slug
         else

@@ -52,6 +52,7 @@ router.post('/:lang/:res/:book/:chapter', (req, res) => {
     res.sendStatus(200)
 })
 
+app.use(express.static(path.join(__dirname, 'src/public')))
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/", router)
