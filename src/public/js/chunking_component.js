@@ -4924,4 +4924,4 @@ type cvChapter {
 
 
 
-<verse number="23" style="v" />The church is his body, the fullness of him who fills all in all.</para>`,S5=document.getElementById("chunkingComponent");S5.setAttribute("data-usx",g5);el.createRoot(document.getElementById("chunkingComponent")).render(On(I4.StrictMode,{children:On(y5,{})}));
+<verse number="23" style="v" />The church is his body, the fullness of him who fills all in all.</para>`,S5=document.getElementById("chunkingComponent");el.createRoot(document.getElementById("chunkingComponent")).render(On(I4.StrictMode,{children:On(y5,{})}));
