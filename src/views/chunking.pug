@@ -9,11 +9,11 @@ block action
 block breadcrumbs
     -
         var crumbs = [
-            {name: "Home", href: "/"},
-            {name: params.lang, href: `/${params.lang}`},
-            {name: params.res, href: `/${params.lang}/${params.res}`},
-            {name: params.book, href: `/${params.lang}/${params.res}/${params.book}`}
+            {name: "HOME", href: "/"},
+            {name: params.lang.toUpperCase(), href: `/${params.lang}`},
+            {name: params.res.toUpperCase(), href: `/${params.lang}/${params.res}`},
+            {name: params.book.toUpperCase(), href: `/${params.lang}/${params.res}/${params.book}`}
         ]
-    +breadcrumbs(crumbs, params.chapter)
+    +breadcrumbs(crumbs, params.chapter.toUpperCase())
 block content
     div(id='chunkingComponent' data-usx=contents)

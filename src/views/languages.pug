@@ -3,6 +3,9 @@ extends index.pug
 block action
     +action Select Language
     
+block breadcrumbs
+    +breadcrumbs([], "HOME")
+
 block content
     ul(class='menu')
         each lang in languages

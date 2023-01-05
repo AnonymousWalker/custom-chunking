@@ -6,11 +6,11 @@ block action
 block breadcrumbs
     -
         var crumbs = [
-            {name: "Home", href: "/"},
-            {name: params.lang, href: `/${params.lang}`},
-            {name: params.res, href: `/${params.lang}/${params.res}`}
+            {name: "HOME", href: "/"},
+            {name: params.lang.toUpperCase(), href: `/${params.lang}`},
+            {name: params.res.toUpperCase(), href: `/${params.lang}/${params.res}`}
         ]
-    +breadcrumbs(crumbs, params.book)
+    +breadcrumbs(crumbs, params.book.toUpperCase())
 block content
     ul(class='menu')
         each chapter in chapters

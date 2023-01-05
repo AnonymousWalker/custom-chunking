@@ -4,7 +4,7 @@ block action
     +action Select Resource
 
 block breadcrumbs
-    +breadcrumbs([{name: "Home", href: "/"}], params.lang)
+    +breadcrumbs([{name: "HOME", href: "/"}], params.lang.toUpperCase())
 block content
     ul(class='menu')
         each res in resources
