@@ -1,3 +1,9 @@
+div#chunkingComponent div:last-of-type {
+    margin-bottom: 20px;
+}
+div#chunkingComponent button {
+    margin-right: 10px;
+}
 button{
     border-radius:8px;
     border:1px solid transparent;
