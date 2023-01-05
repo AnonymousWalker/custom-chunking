@@ -80,7 +80,6 @@ class ProjectAccessor {
             'new-chunks'
         )
         fs.mkdirSync(outputDir, { recursive: true })
-
         fsExtra.emptyDirSync(outputDir)
 
         Object.keys(chunks).forEach(key => {
