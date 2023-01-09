@@ -20,7 +20,8 @@
     "express": "^4.18.2",
     "fs-extra": "^11.1.0",
     "pug": "^3.0.2",
-    "yaml": "^2.2.1"
+    "yaml": "^2.2.1",
+    "door43-client": "^0.9.6"
   },
   "devDependencies": {
     "electron": "^22.0.0",

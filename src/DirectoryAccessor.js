@@ -1,96 +1,50 @@
 const os = require('os')
 const path = require('path')
-const fs = require('fs')
 
 class DirectoryAccessor {
-
-
     constructor() {
-        this.setResourcePath()
-
-        this.excludedResources = [
-            "tn",
-            "tq",
-            "tw",
-            "vol1",
-            "vol2",
-            "vol3"
-        ]
+        this.setPaths()
     }
 
-    setResourcePath() {
+    setPaths() {
         const platform = os.platform()
         const homeDir = os.homedir()
-        let appPath
+        let appPath, appConfigPath
         switch (platform) {
             case "win32":
-                appPath = "AppData/Local"
+                appPath = ""
+                appConfigPath = "AppData/Local"
                 break
             case "darwin":
-                appPath = "Library/Application Support"
+                appPath = "/Applications/BTT-Writer.app/Contents/Resources/app"
+                appConfigPath = "Library/Application Support"
                 break
             case "linux":
-                appPath = ".config"
+                appPath = ""
+                appConfigPath = ".config"
                 break
         }
-
-        this.resourcePath = path.join(homeDir, appPath, "BTT-Writer/library/resource_containers")
+        this.appRcPath = path.join(appPath, "src/index/resource_containers")
+        this.appConfigPath = path.join(homeDir, appConfigPath, "BTT-Writer")
+        this.libraryPath = path.join(this.appConfigPath, "library")
+        this.configRcPath = path.join(this.libraryPath, "resource_containers")
     }
 
-    getProjects() {
-        const resources = []
-        const dirs = fs.readdirSync(this.resourcePath)
-        dirs.forEach(dir => {
-            const dirPath = path.join(this.resourcePath, dir)
-            const stats = fs.statSync(dirPath)
-            if (stats.isDirectory()) {
-                resources.push(dir)
-            }
-        })
-        return resources
+    getLibraryPath() {
+        return this.libraryPath
     }
 
-    getLanguages() {
-        const resources = this.getProjects()
-        return resources.map(res => {
-            return res.split("_")[0]
-        }).filter((res, i, self) => {
-            return self.indexOf(res) === i
-        }).sort()
+    getAppRcPath() {
+        return this.appRcPath
     }
 
-    getResources(lang) {
-        const resources = this.getProjects()
-        return resources.filter(res => {
-            const resLang = res.split("_")[0]
-            return lang === resLang
-        }).map(res => {
-            return res.split("_")[2]
-        }).filter((res, i, self) => {
-            return self.indexOf(res) === i
-        }).filter(res => {
-            return !this.excludedResources.includes(res)
-        }).sort()
-    }
-
-    getBooks(language, resource) {
-        const resources = this.getProjects()
-        return resources.filter(data => {
-            const lang = data.split("_")[0]
-            return lang === language
-        }).filter(data => {
-            const res = data.split("_")[2]
-            return res === resource
-        }).map(data => {
-            return data.split("_")[1]
-        }).filter((data, i, self) => {
-            return self.indexOf(data) === i
-        }).sort()
+    getConfigRcPath() {
+        return this.configRcPath
     }
 
     getProject(language, resource, book) {
         const slug = [language, book, resource].join("_")
-        return path.join(this.resourcePath, slug)
+        return path.join(this.configRcPath, slug)
     }
 }
 

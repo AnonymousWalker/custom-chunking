@@ -8,13 +8,13 @@ block breadcrumbs
         var crumbs = [
             {name: "HOME", href: "/"},
             {name: params.lang.toUpperCase(), href: `/${params.lang}`},
-            {name: params.res.toUpperCase(), href: `/${params.lang}/${params.res}`}
+            {name: params.book.toUpperCase(), href: `/${params.lang}/${params.book}`}
         ]
-    +breadcrumbs(crumbs, params.book.toUpperCase())
+    +breadcrumbs(crumbs, params.res.toUpperCase())
 block content
     ul(class='menu')
         each chapter in chapters
             li
-                a(href=`/${params.lang}/${params.res}/${params.book}/${chapter.slug}`)= chapter.slug
+                a(href=`/${params.lang}/${params.book}/${params.res}/${chapter.slug}`)= chapter.slug
         else
             li(class='not_found') There are no chapters

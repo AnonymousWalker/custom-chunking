@@ -4,16 +4,13 @@ block action
     +action Select Book
 
 block breadcrumbs
-    -
-        var crumbs = [
-            {name: "HOME", href: "/"},
-            {name: params.lang.toUpperCase(), href: `/${params.lang}`}
-        ]
-    +breadcrumbs(crumbs, params.res.toUpperCase())
+    +breadcrumbs([{name: "HOME", href: "/"}], params.lang.toUpperCase())
 block content
     ul(class='menu')
         each book in books
             li
-                a(href=`/${params.lang}/${params.res}/${book}`)= book
+                a(href=`/${params.lang}/${book.slug}`)
+                    span= book.name
+                    span= book.slug
         else
             li(class='not_found') There are no books
