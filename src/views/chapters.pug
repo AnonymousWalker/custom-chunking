@@ -17,4 +17,4 @@ block content
             li
                 a(href=`/${params.lang}/${params.res}/${params.book}/${chapter.slug}`)= chapter.slug
         else
-            li There no chapters
+            li(class='not_found') There are no chapters
