@@ -3,8 +3,19 @@ const path = require('path')
 const fs = require('fs')
 
 class DirectoryAccessor {
+
+
     constructor() {
         this.setResourcePath()
+
+        this.excludedResources = [
+            "tn",
+            "tq",
+            "tw",
+            "vol1",
+            "vol2",
+            "vol3"
+        ]
     }
 
     setResourcePath() {
@@ -57,6 +68,8 @@ class DirectoryAccessor {
             return res.split("_")[2]
         }).filter((res, i, self) => {
             return self.indexOf(res) === i
+        }).filter(res => {
+            return !this.excludedResources.includes(res)
         }).sort()
     }
 
