@@ -65,26 +65,6 @@ router.get('/:lang/:book/:res', (req, res) => {
     const pa = new ProjectAccessor(projectDir)
     const chapters = pa.getChapters()
     res.render("chapters", { params: req.params, chapters: chapters })
-    // da.init()
-
-    // Promise.resolve(true).then(async () => {
-    //     if (!fs.existsSync(projectDir)) {
-    //         if (da.isAppPathExists()) {
-    //             await db.activateProjectContainers(req.params.lang, req.params.book, req.params.res)
-    //             const pa = new ProjectAccessor(projectDir)
-    //             const chapters = pa.getChapters()
-    //             res.render("chapters", { params: req.params, chapters: chapters })
-    //         } else {
-    //             console.log('pick dir')
-
-    //             res.render("setapp", { params: req.params })
-    //         }
-    //     } else {
-    //         const pa = new ProjectAccessor(projectDir)
-    //         const chapters = pa.getChapters()
-    //         res.render("chapters", { params: req.params, chapters: chapters })
-    //     }
-    // })
 })
 
 router.get('/:lang/:book/:res/:chapter', (req, res) => {
