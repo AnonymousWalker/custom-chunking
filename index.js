@@ -53,7 +53,19 @@ router.get('/:lang/:book/:res/:chapter', (req, res) => {
     const projectDir = da.getProject(req.params.lang, req.params.res, req.params.book)
     const pa = new ProjectAccessor(projectDir)
     const chapterText = pa.getChapterText(req.params.chapter)
-    res.render("chunking", { params: req.params, contents: chapterText })
+
+    db.getTargetLanguages().then(languages => {
+        const lang = languages.filter(lang => {
+            return lang.slug === req.params.lang
+        })
+        if (lang.length === 1) {
+            return Promise.resolve(lang[0].direction)
+        } else {
+            return Promise.resolve("ltr")
+        }
+    }).then(direction => {
+        res.render("chunking", { params: req.params, contents: chapterText, direction: direction })
+    })
 })
 
 router.post('/:lang/:book/:res/:chapter', (req, res) => {

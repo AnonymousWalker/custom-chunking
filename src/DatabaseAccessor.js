@@ -20,6 +20,13 @@ class DatabaseAccessor {
         })
     }
 
+    getTargetLanguages() {
+        const mythis = this
+        return Promise.resolve(true).then(() => {
+            return mythis.db.indexSync.getTargetLanguages()
+        })
+    }
+
     getProjects(language) {
         const mythis = this
         return Promise.resolve(true).then(() => {
