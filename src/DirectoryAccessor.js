@@ -1,26 +1,38 @@
 const os = require('os')
 const path = require('path')
+const fs = require("fs");
+const Store = require('electron-store')
+const store = new Store()
 
 class DirectoryAccessor {
     constructor() {
-        this.setPaths()
+        this.init()
     }
 
-    setPaths() {
+    init() {
         const platform = os.platform()
         const homeDir = os.homedir()
-        let appPath, appConfigPath
+        let appRootPath, appPath, appConfigPath
+
+        let ap = store.get("app_path")
+        if (ap && fs.existsSync(ap)) {
+            appRootPath = ap
+        }
+
         switch (platform) {
             case "win32":
-                appPath = ""
+                appRootPath = appRootPath || "C://ProgramFiles/BTT-Writer"
+                appPath = path.join(appRootPath, "app")
                 appConfigPath = "AppData/Local"
                 break
             case "darwin":
-                appPath = "/Applications/BTT-Writer.app/Contents/Resources/app"
+                appRootPath = appRootPath || "/Applications/BTT-Writer.app"
+                appPath = path.join(appRootPath, "Contents/Resources/app")
                 appConfigPath = "Library/Application Support"
                 break
             case "linux":
-                appPath = ""
+                appRootPath = appRootPath || "/opt/BTT-Writer"
+                appPath = path.join(appRootPath, "app")
                 appConfigPath = ".config"
                 break
         }
@@ -28,6 +40,10 @@ class DirectoryAccessor {
         this.appConfigPath = path.join(homeDir, appConfigPath, "BTT-Writer")
         this.libraryPath = path.join(this.appConfigPath, "library")
         this.configRcPath = path.join(this.libraryPath, "resource_containers")
+    }
+
+    isAppPathExists() {
+        return fs.existsSync(this.getAppRcPath())
     }
 
     getLibraryPath() {

@@ -1,11 +1,10 @@
 const path = require('path')
 const Db = require('door43-client')
-const DirectoryAccessor = require('./DirectoryAccessor')
 const utils = require('./utils')
 
 class DatabaseAccessor {
-    constructor() {
-        this.da = new DirectoryAccessor()
+    constructor(directoryAccessor) {
+        this.da = directoryAccessor
 
         const libraryPath = path.join(this.da.getLibraryPath(), "index.sqlite")
         const resourceDir = this.da.getConfigRcPath()

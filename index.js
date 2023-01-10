@@ -11,7 +11,7 @@ const DirectoryAccessor = require('./src/DirectoryAccessor')
 const DatabaseAccessor = require('./src/DatabaseAccessor')
 
 const da = new DirectoryAccessor()
-const db = new DatabaseAccessor()
+const db = new DatabaseAccessor(da)
 
 app.set("view engine", "pug")
 app.set("views", path.join(__dirname, "src/views"))
@@ -37,15 +37,25 @@ router.get('/:lang/:book', (req, res) => {
 router.get('/:lang/:book/:res', (req, res) => {
     const projectDir = da.getProject(req.params.lang, req.params.res, req.params.book)
 
+    da.init()
+
     Promise.resolve(true).then(() => {
         if (!fs.existsSync(projectDir)) {
-            return db.activateProjectContainers(req.params.lang, req.params.book, req.params.res)
+            if (da.isAppPathExists()) {
+                return db.activateProjectContainers(req.params.lang, req.params.book, req.params.res)
+            } else {
+                return false
+            }
         }
         return true
-    }).then(() => {
-        const pa = new ProjectAccessor(projectDir)
-        const chapters = pa.getChapters()
-        res.render("chapters", { params: req.params, chapters: chapters })
+    }).then((ok) => {
+        if (ok) {
+            const pa = new ProjectAccessor(projectDir)
+            const chapters = pa.getChapters()
+            res.render("chapters", { params: req.params, chapters: chapters })
+        } else {
+            res.render("setapp", { params: req.params })
+        }
     })
 })
 

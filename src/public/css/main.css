@@ -103,6 +103,18 @@ ul.menu li.not_found {
     padding: 0;
 }
 
+.setapp {
+    padding: 10px;
+    width: 50%;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.setapp * {
+    margin-bottom: 20px;
+}
+
 @media (prefers-color-scheme: light){
     :root{
         color:#213547;
