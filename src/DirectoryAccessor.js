@@ -22,7 +22,7 @@ class DirectoryAccessor {
         switch (platform) {
             case "win32":
                 appRootPath = appRootPath || "C://ProgramFiles/BTT-Writer"
-                appPath = path.join(appRootPath, "app")
+                appPath = path.join(appRootPath, "resources/app")
                 appConfigPath = "AppData/Local"
                 break
             case "darwin":
@@ -32,7 +32,7 @@ class DirectoryAccessor {
                 break
             case "linux":
                 appRootPath = appRootPath || "/opt/BTT-Writer"
-                appPath = path.join(appRootPath, "app")
+                appPath = path.join(appRootPath, "resources/app")
                 appConfigPath = ".config"
                 break
         }
