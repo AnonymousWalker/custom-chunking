@@ -34,29 +34,57 @@ router.get('/:lang/:book', (req, res) => {
     })
 })
 
-router.get('/:lang/:book/:res', (req, res) => {
+router.get('/:lang/:book/:res/check', (req, res) => {
     const projectDir = da.getProject(req.params.lang, req.params.res, req.params.book)
-
     da.init()
 
-    Promise.resolve(true).then(() => {
+    
+
+    Promise.resolve(true).then(async () => {
         if (!fs.existsSync(projectDir)) {
-            if (da.isAppPathExists()) {
-                return db.activateProjectContainers(req.params.lang, req.params.book, req.params.res)
+            if (!da.isAppPathExists()) {
+                // request user to select the install dir 
+                res.sendStatus(303)
             } else {
-                return false
+                // activates RC and responds 'ready' 
+                await db.activateProjectContainers(req.params.lang, req.params.book, req.params.res)
+                res.sendStatus(204)
             }
-        }
-        return true
-    }).then((ok) => {
-        if (ok) {
-            const pa = new ProjectAccessor(projectDir)
-            const chapters = pa.getChapters()
-            res.render("chapters", { params: req.params, chapters: chapters })
         } else {
-            res.render("setapp", { params: req.params })
+            res.sendStatus(204)
         }
     })
+})
+
+router.get('/:lang/:book/select-app-dir', (req, res) => {
+    res.render("setapp", { params: req.params })
+})
+
+router.get('/:lang/:book/:res', (req, res) => {
+    const projectDir = da.getProject(req.params.lang, req.params.res, req.params.book)
+    const pa = new ProjectAccessor(projectDir)
+    const chapters = pa.getChapters()
+    res.render("chapters", { params: req.params, chapters: chapters })
+    // da.init()
+
+    // Promise.resolve(true).then(async () => {
+    //     if (!fs.existsSync(projectDir)) {
+    //         if (da.isAppPathExists()) {
+    //             await db.activateProjectContainers(req.params.lang, req.params.book, req.params.res)
+    //             const pa = new ProjectAccessor(projectDir)
+    //             const chapters = pa.getChapters()
+    //             res.render("chapters", { params: req.params, chapters: chapters })
+    //         } else {
+    //             console.log('pick dir')
+
+    //             res.render("setapp", { params: req.params })
+    //         }
+    //     } else {
+    //         const pa = new ProjectAccessor(projectDir)
+    //         const chapters = pa.getChapters()
+    //         res.render("chapters", { params: req.params, chapters: chapters })
+    //     }
+    // })
 })
 
 router.get('/:lang/:book/:res/:chapter', (req, res) => {
