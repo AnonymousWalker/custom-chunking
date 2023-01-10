@@ -14,9 +14,9 @@ block breadcrumbs
         var crumbs = [
             {name: "HOME", href: "/"},
             {name: params.lang.toUpperCase(), href: `/${params.lang}`},
-            {name: params.res.toUpperCase(), href: `/${params.lang}/${params.res}`},
-            {name: params.book.toUpperCase(), href: `/${params.lang}/${params.res}/${params.book}`}
+            {name: params.book.toUpperCase(), href: `/${params.lang}/${params.book}`},
+            {name: params.res.toUpperCase(), href: `/${params.lang}/${params.book}/${params.res}`}
         ]
     +breadcrumbs(crumbs, params.chapter.toUpperCase())
 block content
-    div(id='chunkingComponent' data-usx=contents)
+    div(id='chunkingComponent', data-usx=contents, dir=direction)

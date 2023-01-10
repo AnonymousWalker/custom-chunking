@@ -1,96 +1,66 @@
 const os = require('os')
 const path = require('path')
-const fs = require('fs')
+const fs = require("fs");
+const Store = require('electron-store')
+const store = new Store()
 
 class DirectoryAccessor {
-
-
     constructor() {
-        this.setResourcePath()
-
-        this.excludedResources = [
-            "tn",
-            "tq",
-            "tw",
-            "vol1",
-            "vol2",
-            "vol3"
-        ]
+        this.init()
     }
 
-    setResourcePath() {
+    init() {
         const platform = os.platform()
         const homeDir = os.homedir()
-        let appPath
-        switch (platform) {
-            case "win32":
-                appPath = "AppData/Local"
-                break
-            case "darwin":
-                appPath = "Library/Application Support"
-                break
-            case "linux":
-                appPath = ".config"
-                break
+        let appRootPath, appPath, appConfigPath
+
+        let ap = store.get("app_path")
+        if (ap && fs.existsSync(ap)) {
+            appRootPath = ap
         }
 
-        this.resourcePath = path.join(homeDir, appPath, "BTT-Writer/library/resource_containers")
+        switch (platform) {
+            case "win32":
+                appRootPath = appRootPath || "C://ProgramFiles/BTT-Writer"
+                appPath = path.join(appRootPath, "app")
+                appConfigPath = "AppData/Local"
+                break
+            case "darwin":
+                appRootPath = appRootPath || "/Applications/BTT-Writer.app"
+                appPath = path.join(appRootPath, "Contents/Resources/app")
+                appConfigPath = "Library/Application Support"
+                break
+            case "linux":
+                appRootPath = appRootPath || "/opt/BTT-Writer"
+                appPath = path.join(appRootPath, "app")
+                appConfigPath = ".config"
+                break
+        }
+        this.appRcPath = path.join(appPath, "src/index/resource_containers")
+        this.appConfigPath = path.join(homeDir, appConfigPath, "BTT-Writer")
+        this.libraryPath = path.join(this.appConfigPath, "library")
+        this.configRcPath = path.join(this.libraryPath, "resource_containers")
     }
 
-    getProjects() {
-        const resources = []
-        const dirs = fs.readdirSync(this.resourcePath)
-        dirs.forEach(dir => {
-            const dirPath = path.join(this.resourcePath, dir)
-            const stats = fs.statSync(dirPath)
-            if (stats.isDirectory()) {
-                resources.push(dir)
-            }
-        })
-        return resources
+    isAppPathExists() {
+        return fs.existsSync(this.getAppRcPath())
     }
 
-    getLanguages() {
-        const resources = this.getProjects()
-        return resources.map(res => {
-            return res.split("_")[0]
-        }).filter((res, i, self) => {
-            return self.indexOf(res) === i
-        }).sort()
+    getLibraryPath() {
+        return this.libraryPath
     }
 
-    getResources(lang) {
-        const resources = this.getProjects()
-        return resources.filter(res => {
-            const resLang = res.split("_")[0]
-            return lang === resLang
-        }).map(res => {
-            return res.split("_")[2]
-        }).filter((res, i, self) => {
-            return self.indexOf(res) === i
-        }).filter(res => {
-            return !this.excludedResources.includes(res)
-        }).sort()
+    getAppRcPath() {
+        return this.appRcPath
     }
 
-    getBooks(language, resource) {
-        const resources = this.getProjects()
-        return resources.filter(data => {
-            const lang = data.split("_")[0]
-            return lang === language
-        }).filter(data => {
-            const res = data.split("_")[2]
-            return res === resource
-        }).map(data => {
-            return data.split("_")[1]
-        }).filter((data, i, self) => {
-            return self.indexOf(data) === i
-        }).sort()
+    getConfigRcPath() {
+        return this.configRcPath
     }
 
     getProject(language, resource, book) {
         const slug = [language, book, resource].join("_")
-        return path.join(this.resourcePath, slug)
+        return path.join(this.configRcPath, slug)
     }
 }
 

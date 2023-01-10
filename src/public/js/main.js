@@ -1,20 +1,12 @@
-function test(chunk) {
-    alert(chunk)
-}
+const setAppBtn = document.querySelector("div.setapp button")
 
-async function saveChunks() {
-    const chunks = {
-        "01": `chunk 1 content`
-    }
-
-    return fetch(window.location.href, {
-        method: "POST",
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({chunks: chunks})
-    }).then(res => {
-        if (res.status == 200) alert("Success")
+if (setAppBtn) {
+    const redirectUrl = setAppBtn.dataset.url
+    setAppBtn.addEventListener('click', () => {
+        window.electronAPI.selectFolder().then(() => {
+            window.electronAPI.redirect(redirectUrl)
+        }).catch(err => {
+            alert(err)
+        })
     })
 }

@@ -1,48 +1,84 @@
 const express = require('express')
 const app = express()
 const router = express.Router()
-const bodyParser = require("body-parser");
-const path = require("path")
+const bodyParser = require('body-parser');
+const path = require('path')
+const fs = require('fs')
 
 const port = 3000
 const ProjectAccessor = require('./src/ProjectAccessor')
 const DirectoryAccessor = require('./src/DirectoryAccessor')
+const DatabaseAccessor = require('./src/DatabaseAccessor')
 
 const da = new DirectoryAccessor()
+const db = new DatabaseAccessor(da)
 
 app.set("view engine", "pug")
 app.set("views", path.join(__dirname, "src/views"))
 
 router.get('/', (req, res) => {
-    const languages = da.getLanguages()
-    res.render("languages", { languages: languages })
+    db.getSourceLanguages().then(languages => {
+        res.render("languages", { languages: languages })
+    })
 })
 
 router.get('/:lang', (req, res) => {
-    const resources = da.getResources(req.params.lang)
-    res.render("resources", { params: req.params, resources: resources })
+    db.getProjects(req.params.lang).then(books => {
+        res.render("books", { params: req.params, books: books })
+    })
 })
 
-router.get('/:lang/:res', (req, res) => {
-    const books = da.getBooks(req.params.lang, req.params.res)
-    res.render("books", { params: req.params, books: books })
+router.get('/:lang/:book', (req, res) => {
+    db.getSourcesByProject(req.params.lang, req.params.book).then(resources => {
+        res.render("resources", { params: req.params, resources: resources })
+    })
 })
 
-router.get('/:lang/:res/:book', (req, res) => {
+router.get('/:lang/:book/:res', (req, res) => {
     const projectDir = da.getProject(req.params.lang, req.params.res, req.params.book)
-    const pa = new ProjectAccessor(projectDir)
-    const chapters = pa.getChapters()
-    res.render("chapters", { params: req.params, chapters: chapters })
+
+    da.init()
+
+    Promise.resolve(true).then(() => {
+        if (!fs.existsSync(projectDir)) {
+            if (da.isAppPathExists()) {
+                return db.activateProjectContainers(req.params.lang, req.params.book, req.params.res)
+            } else {
+                return false
+            }
+        }
+        return true
+    }).then((ok) => {
+        if (ok) {
+            const pa = new ProjectAccessor(projectDir)
+            const chapters = pa.getChapters()
+            res.render("chapters", { params: req.params, chapters: chapters })
+        } else {
+            res.render("setapp", { params: req.params })
+        }
+    })
 })
 
-router.get('/:lang/:res/:book/:chapter', (req, res) => {
+router.get('/:lang/:book/:res/:chapter', (req, res) => {
     const projectDir = da.getProject(req.params.lang, req.params.res, req.params.book)
     const pa = new ProjectAccessor(projectDir)
     const chapterText = pa.getChapterText(req.params.chapter)
-    res.render("chunking", { params: req.params, contents: chapterText })
+
+    db.getTargetLanguages().then(languages => {
+        const lang = languages.filter(lang => {
+            return lang.slug === req.params.lang
+        })
+        if (lang.length === 1) {
+            return Promise.resolve(lang[0].direction)
+        } else {
+            return Promise.resolve("ltr")
+        }
+    }).then(direction => {
+        res.render("chunking", { params: req.params, contents: chapterText, direction: direction })
+    })
 })
 
-router.post('/:lang/:res/:book/:chapter', (req, res) => {
+router.post('/:lang/:book/:res/:chapter', (req, res) => {
     const projectDir = da.getProject(req.params.lang, req.params.res, req.params.book)
     const pa = new ProjectAccessor(projectDir)
     const chunks = req.body

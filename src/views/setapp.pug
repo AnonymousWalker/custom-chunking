@@ -1,0 +1,20 @@
+extends index.pug
+
+block append scripts
+    script(type='module', src='/js/main.js')
+
+block action
+    +action Set App Location
+
+block breadcrumbs
+    -
+        var crumbs = [
+            {name: "HOME", href: "/"},
+            {name: params.lang.toUpperCase(), href: `/${params.lang}`},
+            {name: params.book.toUpperCase(), href: `/${params.lang}/${params.book}`}
+        ]
+    +breadcrumbs(crumbs, "SET APP")
+block content
+    div(class="setapp")
+        span We could not find BTT-Writer in the default location. Please specify the path.
+        button(data-url=`/${params.lang}/${params.book}/${params.res}`) Select Directory

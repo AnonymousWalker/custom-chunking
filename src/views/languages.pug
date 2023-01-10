@@ -10,6 +10,8 @@ block content
     ul(class='menu')
         each lang in languages
             li
-                a(href=`/${lang}`)= lang
+                a(href=`/${lang.slug}`)
+                    span= lang.name
+                    span= lang.slug
         else
             li(class='not_found') There are no languages

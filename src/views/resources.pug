@@ -4,11 +4,18 @@ block action
     +action Select Resource
 
 block breadcrumbs
-    +breadcrumbs([{name: "HOME", href: "/"}], params.lang.toUpperCase())
+    -
+        var crumbs = [
+            {name: "HOME", href: "/"},
+            {name: params.lang.toUpperCase(), href: `/${params.lang}`}
+        ]
+    +breadcrumbs(crumbs, params.book.toUpperCase())
 block content
     ul(class='menu')
         each res in resources
             li
-                a(href=`/${params.lang}/${res}`)= res
+                a(href=`/${params.lang}/${params.book}/${res.resource_id}`)
+                    span= res.resource_name
+                    span= res.resource_id
         else
             li(class='not_found') There are no resources

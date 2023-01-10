@@ -1,9 +1,7 @@
 const path = require('path')
 const fs = require('fs')
-const fsExtra = require('fs-extra')
 const YAML = require('yaml')
 const Chapter = require('./Chapter')
-const Chunk = require('./Chunk')
 const utils = require('./utils')
 
 class ProjectAccessor {
