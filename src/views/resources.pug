@@ -11,7 +11,7 @@ block breadcrumbs
         ]
     +breadcrumbs(crumbs, params.book.toUpperCase())
 block content
-    ul(class='menu')
+    ul(class='menu resource-list')
         each res in resources
             li
                 a(onclick=`openResource('${params.lang}', '${params.book}', '${res.resource_id}')`)
@@ -19,3 +19,5 @@ block content
                     span= res.resource_id
         else
             li(class='not_found') There are no resources
+    
+    dialog(class='busy-dialog') Checking container...
