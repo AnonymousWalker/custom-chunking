@@ -38,15 +38,20 @@ router.get('/:lang/:book/:res/check', (req, res) => {
     const projectDir = da.getProject(req.params.lang, req.params.res, req.params.book)
     da.init()
 
-    Promise.resolve(true).then(async () => {
+    Promise.resolve(true).then(() => {
         if (!fs.existsSync(projectDir)) {
             if (!da.isAppPathExists()) {
                 // request user to select the install dir 
                 res.sendStatus(303)
             } else {
                 // activates RC and responds 'ready' 
-                await db.activateProjectContainers(req.params.lang, req.params.book, req.params.res)
-                res.sendStatus(204)
+                console.log('activating project... ' + projectDir)
+                db.activateProjectContainers(req.params.lang, req.params.book, req.params.res)
+                    .finally(() => res.sendStatus(204))
+                    .catch(e => {
+                        console.error(e)
+                    })
+                
             }
         } else {
             res.sendStatus(204)
