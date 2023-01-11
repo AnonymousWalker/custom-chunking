@@ -38,8 +38,6 @@ router.get('/:lang/:book/:res/check', (req, res) => {
     const projectDir = da.getProject(req.params.lang, req.params.res, req.params.book)
     da.init()
 
-    
-
     Promise.resolve(true).then(async () => {
         if (!fs.existsSync(projectDir)) {
             if (!da.isAppPathExists()) {
@@ -56,7 +54,7 @@ router.get('/:lang/:book/:res/check', (req, res) => {
     })
 })
 
-router.get('/:lang/:book/select-app-dir', (req, res) => {
+router.get('/:lang/:book/:res/select-app-dir', (req, res) => {
     res.render("setapp", { params: req.params })
 })
 
