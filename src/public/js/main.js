@@ -19,7 +19,7 @@ function openResource(lang, book, resourceId){
     const checkURL = `${currentURL}/check`
 
     document.querySelector('.resource-list').remove()
-    document.querySelector('.busy-dialog').toggleAttribute('open')
+    document.querySelector('.busy-dialog').setAttribute('open', '')
 
     fetch(checkURL, {
         method: 'GET'
