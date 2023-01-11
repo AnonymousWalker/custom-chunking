@@ -17,4 +17,4 @@ block breadcrumbs
 block content
     div(class="setapp")
         span We could not find BTT-Writer in the default location. Please specify the path.
-        button(data-url=`/${params.lang}/${params.book}/${params.res}`) Select Directory
+        button(data-lang=params.lang, data-book=params.book, data-res=params.res) Select Directory

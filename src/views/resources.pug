@@ -14,7 +14,7 @@ block content
     ul(class='menu')
         each res in resources
             li
-                a(onclick=`openResource(\"${res.resource_id}\")`)
+                a(onclick=`openResource('${params.lang}', '${params.book}', '${res.resource_id}')`)
                     span= res.resource_name
                     span= res.resource_id
         else
