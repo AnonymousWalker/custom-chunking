@@ -18,15 +18,13 @@ function openResource(lang, book, resourceId){
     const currentURL = `/${lang}/${book}/${resourceId}`
     const checkURL = `${currentURL}/check`
 
-    document.querySelector('.resource-list').remove()
-    document.querySelector('.busy-dialog').setAttribute('open', '')
+    document.querySelector('.busy-dialog')?.showModal()
 
     fetch(checkURL, {
         method: 'GET'
     })
     .then(response => {
         if (response.status == 204) {
-            document.querySelector('.busy-dialog').removeAttribute('open')
             window.location.href = currentURL
         } else {
             window.location.href = `${currentURL}/select-app-dir`
