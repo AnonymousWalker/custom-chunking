@@ -1,6 +1,6 @@
 {
     "name": "custom-chunking",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "",
     "main": "main.js",
     "author": "WycliffeAssociates <mail@example.com>",
@@ -15,14 +15,22 @@
     "build": {
         "appId": "org.wa.custom-chunking",
         "mac": {
-            "target": "zip",
-            "darkModeSupport": true
+            "target": {
+                "target": "zip",
+                "arch": "universal"
+            },
+            "darkModeSupport": true,
+            "category": "public.app-category.utilities"
         },
         "win": {
-            "target": "nsis"
+            "target": {
+                "target": "nsis",
+                "arch": "universal"
+            }
         },
         "linux": {
-            "target": "deb"
+            "target": "deb",
+            "category": "Utility"
         }
     },
     "repository": {
