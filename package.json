@@ -3,13 +3,27 @@
     "version": "1.0.0",
     "description": "",
     "main": "main.js",
+    "author": "WycliffeAssociates <mail@example.com>",
     "scripts": {
         "start": "node index.js",
         "test": "node test.js",
         "electron": "electron main.js",
-        "package-mac": "electron-packager . custom-chunking --overwrite --platform=darwin --arch=arm64 --prune=true --out=release-builds",
-        "package-win": "electron-packager . custom-chunking --overwrite --asar=true --platform=win32 --arch=x64 --prune=true --out=release-builds --version-string.CompanyName=WA --version-string.FileDescription=WA --version-string.ProductName=custom-chunking",
-        "package-linux": "electron-packager . custom-chunking --overwrite --asar=true --platform=linux --arch=x64 --prune=true --out=release-builds"
+        "pack": "electron-builder --dir",
+        "dist": "electron-builder",
+        "postinstall": "electron-builder install-app-deps"
+    },
+    "build": {
+        "appId": "org.wa.custom-chunking",
+        "mac": {
+            "target": "zip",
+            "darkModeSupport": true
+        },
+        "win": {
+            "target": "nsis"
+        },
+        "linux": {
+            "target": "deb"
+        }
     },
     "repository": {
         "type": "git",
@@ -26,8 +40,6 @@
     },
     "devDependencies": {
         "electron": "^22.0.0",
-        "electron-packager": "^17.1.1",
-        "electron-rebuild": "^3.2.9",
-        "node-gyp": "^9.3.1"
+        "electron-builder": "^23.6.0"
     }
 }
