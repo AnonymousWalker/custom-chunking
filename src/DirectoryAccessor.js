@@ -21,7 +21,10 @@ class DirectoryAccessor {
 
         switch (platform) {
             case "win32":
-                appRootPath = appRootPath || "C://ProgramFiles/BTT-Writer"
+                appRootPath = appRootPath || "C:\\Program Files\\BTT-Writer"
+                if (!fs.existsSync(appRootPath)) {
+                    appRootPath = "C:\\Program Files (x86)\\BTT-Writer"
+                }
                 appPath = path.join(appRootPath, "resources/app")
                 appConfigPath = "AppData/Local"
                 break
